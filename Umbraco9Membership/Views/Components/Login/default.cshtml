@@ -1,0 +1,45 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<LoginViewModel>
+
+@using Umbraco9Membership.Models.ViewModels;
+
+@if (User.Identity.IsAuthenticated)
+{
+    <div class="row">
+        <div class="col-12 text-center">
+            
+            @using (Html.BeginUmbracoForm("Logout", "AccountSurface", FormMethod.Post))
+            {
+                <p class="mb-5">Signed in as @User.Identity.Name</p>
+                <div class="form-group">
+                    <button class="btn btn-primary btn-block btn-lg" type="submit">Logout</button>
+                </div>
+            }
+
+        </div>
+    </div>
+}
+else
+{
+    using (Html.BeginUmbracoForm("Login", "AccountSurface", FormMethod.Post))
+    {
+        <div class="form-group text-left">
+            <label asp-for="@Model.Username"></label>
+            <input asp-for="@Model.Username" class="form-control" />
+            <span asp-validation-for="@Model.Username" class="text-danger"></span>
+
+        </div>
+        <div class="form-group text-left">
+            <label asp-for="@Model.Password"></label>
+            <input asp-for="@Model.Password" type="password" class="form-control" />
+            <span asp-validation-for="@Model.Password" class="text-danger"></span>
+        </div>
+        <div class="form-group text-left float-left">
+            <label asp-for="@Model.RememberMe"></label>
+            <input asp-for="@Model.RememberMe" type="checkbox" class="form-control" />
+            <span asp-validation-for="@Model.RememberMe" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <button class="btn btn-primary btn-block btn-lg" type="submit">Login</button>
+        </div>
+    }
+}
