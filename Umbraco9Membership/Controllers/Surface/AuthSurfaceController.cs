@@ -19,14 +19,14 @@ using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
 namespace Umbraco9Membership.Controllers.Surface
 {
-    public class AccountSurfaceController : SurfaceController
+    public class AuthSurfaceController : SurfaceController
     {
         private readonly IMemberSignInManager _memberSignInManager;
         private readonly IMemberManager _memberManager;
         private readonly IMemberService _memberService;
-        private readonly ILogger<AccountSurfaceController> _logger;
+        private readonly ILogger<AuthSurfaceController> _logger;
 
-        public AccountSurfaceController(
+        public AuthSurfaceController(
             //these are required by the base controller
             IUmbracoContextAccessor umbracoContextAccessor, 
             IUmbracoDatabaseFactory databaseFactory,
@@ -38,7 +38,7 @@ namespace Umbraco9Membership.Controllers.Surface
             IMemberSignInManager memberSignInManager,
             IMemberManager memberManager,
             IMemberService memberService,
-            ILogger<AccountSurfaceController> logger
+            ILogger<AuthSurfaceController> logger
             ) : base(umbracoContextAccessor, databaseFactory, services, appCaches, profilingLogger, publishedUrlProvider)
         {
             _memberSignInManager = memberSignInManager ?? throw new ArgumentNullException(nameof(memberSignInManager));

@@ -8,7 +8,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Portfolio" Version="1.0.1" />
+        <PackageReference Include="Portfolio" Version="1.0.3" />
         <PackageReference Include="Umbraco.Cms" Version="9.0.0" />
         <PackageReference Include="Umbraco.Cms.SqlCe" Version="9.0.0" />
         <PackageReference Include="Umbraco.SqlServerCE" Version="4.0.0.1" />
