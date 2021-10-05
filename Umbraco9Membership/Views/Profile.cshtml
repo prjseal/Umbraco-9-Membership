@@ -1,0 +1,39 @@
+﻿@using Umbraco.Cms.Web.Common.PublishedModels;
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.Profile>
+@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
+@using Umbraco.Cms.Core.Security
+
+@inject IMemberManager memberManager
+
+
+@{
+    Layout = "Master.cshtml";
+}
+
+
+<main class="page contact-page">
+    <section class="portfolio-block contact">
+        <div class="container">
+            <div class="heading">
+                <h1 class="text-uppercase font-weight-bold">@Model.Name</h1>
+
+                @if (!User.Identity.IsAuthenticated)
+                {
+                    <div class="row">
+                        <div class="col-12 text-center">
+                            <p>You need to be logged in before you view your profile. <a href="/login/">Login</a></p>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="row">
+                        <div class="col-6 mx-auto text-left">
+                            @await Component.InvokeAsync("Profile", await memberManager.GetCurrentMemberAsync())
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </section>
+</main>

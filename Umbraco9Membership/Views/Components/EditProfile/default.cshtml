@@ -1,0 +1,79 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<RegisterViewModel>
+
+@using Umbraco9Membership.Models.ViewModels;
+@{
+    var submitted = false;
+    if (bool.TryParse(TempData["Success"]?.ToString() ?? "", out var success))
+    {
+        submitted = true;
+    }
+}
+
+@if (!User.Identity.IsAuthenticated)
+{
+    <div class="row">
+        <div class="col-12 text-center">
+            <p>You need to be logged in before you can edit your profile. <a href="/login/">Login</a></p>
+        </div>
+    </div>
+}
+else
+{
+    if (submitted)
+    {
+        if (success)
+        {
+            <div class="row">
+                <div class="col-12 text-center">
+                    @if (success)
+                    {
+                        <p>Thanks for registering. You can now <a href="/login/">Login</a></p>
+                    }
+                    else
+                    {
+                        <p>There was an error when trying to register. Please try again later.</p>
+                    }
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        using (Html.BeginUmbracoForm("Register", "RegisterSurface", FormMethod.Post, new { @class="text-left"}))
+        {
+            <div class="form-group">
+                <label asp-for="@Model.FirstName"></label>
+                <input asp-for="@Model.FirstName" class="form-control" />
+                <span asp-validation-for="@Model.FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.LastName"></label>
+                <input asp-for="@Model.LastName" class="form-control" />
+                <span asp-validation-for="@Model.LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.Email"></label>
+                <input asp-for="@Model.Email" class="form-control" />
+                <span asp-validation-for="@Model.Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.Password"></label>
+                <input asp-for="@Model.Password" type="password" class="form-control" />
+                <span asp-validation-for="@Model.Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.ConfirmPassword"></label>
+                <input asp-for="@Model.ConfirmPassword" type="password" class="form-control" />
+                <span asp-validation-for="@Model.ConfirmPassword" class="text-danger"></span>
+            </div>
+            <div class="form-check text-left float-left">
+                <label asp-for="@Model.Consent"></label>
+                <input asp-for="@Model.Consent" type="checkbox" class="form-control" />
+                <span asp-validation-for="@Model.Consent" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-primary btn-block btn-lg" type="submit">Register</button>
+            </div>
+        }    
+    }
+}
