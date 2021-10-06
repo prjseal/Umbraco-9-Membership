@@ -9,6 +9,12 @@ namespace Umbraco9Membership.Services
     {
         ProfileViewModel GetEnrichedProfile(ContentModels.Member member);
 
-        ContentModels.Member GetMemberFromUser(MemberIdentityUser user);
+        ContentModels.Member GetMemberModelFromUser(MemberIdentityUser user);
+
+        ContentModels.Member GetMemberModelFromMember(IMember member);
+
+        IMember GetMemberFromUser(MemberIdentityUser user);
+
+        void UpdateProfile(EditProfileViewModel model, ContentModels.Member memberModel, IMember member);
     }
 }

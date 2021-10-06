@@ -1,79 +1,125 @@
-﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<RegisterViewModel>
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<EditProfileViewModel>
 
 @using Umbraco9Membership.Models.ViewModels;
-@{
-    var submitted = false;
-    if (bool.TryParse(TempData["Success"]?.ToString() ?? "", out var success))
-    {
-        submitted = true;
-    }
-}
+@{ var submitted = false;
+                if (bool.TryParse(TempData["Success"]?.ToString() ?? "", out var success))
+                {
+                    submitted = true;
+                } }
 
 @if (!User.Identity.IsAuthenticated)
 {
-    <div class="row">
-        <div class="col-12 text-center">
-            <p>You need to be logged in before you can edit your profile. <a href="/login/">Login</a></p>
-        </div>
+<div class="row">
+    <div class="col-12 text-center">
+        <p>You need to be logged in before you can edit your profile. <a href="/login/">Login</a></p>
     </div>
-}
-else
-{
-    if (submitted)
-    {
-        if (success)
+</div> }
+            else
+            {
+                if (submitted)
+                {
+                    if (success)
+                    {
+<div class="row">
+    <div class="col-12 text-center">
+        @if (success)
         {
-            <div class="row">
-                <div class="col-12 text-center">
-                    @if (success)
-                    {
-                        <p>Thanks for registering. You can now <a href="/login/">Login</a></p>
-                    }
-                    else
-                    {
-                        <p>There was an error when trying to register. Please try again later.</p>
-                    }
-                </div>
-            </div>
-        }
+<p>Thanks for registering. You can now <a href="/login/">Login</a></p> }
+                        else
+                        {
+<p>There was an error when trying to register. Please try again later.</p>}
+    </div>
+</div> }
     }
     else
     {
-        using (Html.BeginUmbracoForm("Register", "RegisterSurface", FormMethod.Post, new { @class="text-left"}))
+        using (Html.BeginUmbracoForm("EditProfile", "ProfileSurface", FormMethod.Post, new { @class = "text-left" }))
         {
             <div class="form-group">
-                <label asp-for="@Model.FirstName"></label>
+                <label asp-for="@Model.Avatar" />
+                <div>
+                    <input asp-for="@Model.AvatarUrl" type="hidden" />
+                    <img class="image-fluid" src="@(Model.AvatarUrl ?? "/img/profile.png")" />
+                </div>
+
+                <input type="file" name="Avatar" id="Avatar" />
+                <span asp-validation-for="@Model.Avatar" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.FirstName" />
                 <input asp-for="@Model.FirstName" class="form-control" />
                 <span asp-validation-for="@Model.FirstName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="@Model.LastName"></label>
+                <label asp-for="@Model.LastName" />
                 <input asp-for="@Model.LastName" class="form-control" />
                 <span asp-validation-for="@Model.LastName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="@Model.Email"></label>
-                <input asp-for="@Model.Email" class="form-control" />
-                <span asp-validation-for="@Model.Email" class="text-danger"></span>
+                <label asp-for="@Model.JobTitle" />
+                <select asp-for="@Model.JobTitle" asp-items="Model.JobTitleOptions"></select>
+                <span asp-validation-for="@Model.JobTitle" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="@Model.Password"></label>
-                <input asp-for="@Model.Password" type="password" class="form-control" />
-                <span asp-validation-for="@Model.Password" class="text-danger"></span>
+                <p>Skills</p>
+                <label asp-for="@Model.Skills" />
+
+                @{ 
+                    var skillIndex = 0;
+                    foreach (var skill in Model.SkillsOptions)
+                    {
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" name="Skills" id="Skills_@skillIndex" value="@skill.Value" checked="@skill.Selected" />
+                                <label for="Skills_@skillIndex">@skill.Value</label>
+                                <span asp-validation-for="@Model.Skills" class="text-danger"></span>
+                            </label>
+                        </div>
+                        skillIndex++;
+                    }
+                }
             </div>
             <div class="form-group">
-                <label asp-for="@Model.ConfirmPassword"></label>
-                <input asp-for="@Model.ConfirmPassword" type="password" class="form-control" />
-                <span asp-validation-for="@Model.ConfirmPassword" class="text-danger"></span>
-            </div>
-            <div class="form-check text-left float-left">
-                <label asp-for="@Model.Consent"></label>
-                <input asp-for="@Model.Consent" type="checkbox" class="form-control" />
-                <span asp-validation-for="@Model.Consent" class="text-danger"></span>
+                <label asp-for="@Model.FavouriteColour" />
+                @foreach (var colour in Model.FavouriteColourOptions)
+                {
+                    <div class="radio">
+                        <label>
+                            <input type="radio" asp-for="@Model.FavouriteColour" value="@colour.Value" />
+                            <span>@colour.Text</span>
+                        </label>
+                    </div>
+                }
             </div>
             <div class="form-group">
-                <button class="btn btn-primary btn-block btn-lg" type="submit">Register</button>
+
+                <label asp-for="@Model.Gallery" />
+                <input asp-for="@Model.GallerySortOrder" type="hidden" />
+                @if (Model.CurrentGalleryItems != null && Model.CurrentGalleryItems.Any())
+                {
+                    <div id="sortable">
+                        @{
+                            var itemCount = 0;
+                        }
+                        @foreach (var item in Model.CurrentGalleryItems)
+                        {
+                            <img class="ui-state-default" data-sort="@itemCount" src="@item.GetCropUrl(120, 120)" alt="@item.Name" />
+                            itemCount++;
+                        }
+                    </div>
+                }
             </div>
-        }    
+            <div class="form-group text-left float-left">
+                <label asp-for="@Model.OverwriteGalleryImages"></label>
+                <input asp-for="@Model.OverwriteGalleryImages" type="checkbox" class="form-control" />
+
+                <input type="file" name="Gallery" id="Gallery" multiple />
+                <span asp-validation-for="@Model.Gallery" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <button class="btn btn-primary btn-block btn-lg" type="submit">Update</button>
+            </div>
+        }
     }
 }

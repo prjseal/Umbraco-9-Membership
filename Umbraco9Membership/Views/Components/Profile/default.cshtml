@@ -14,7 +14,7 @@ else
 {
     <dl>
         <dt>Avatar:</dt>
-        <dd><img src="@(Model.Avatar?.GetCropUrl(120,120) ?? "")" /></dd>
+        <dd><img class="rounded" src="@(Model.Avatar?.GetCropUrl(120,120) ?? "")" /></dd>
         <dt>First Name:</dt>
         <dd>@Model.FirstName</dd>
         <dt>Last Name:</dt>
@@ -22,7 +22,7 @@ else
         <dt>Job Title:</dt>
         <dd>@Model.JobTitle</dd>
         <dt>Email:</dt>
-        <dd>@Model.Email <a href="/change-email/">change</a></dd>
+        <dd>@Model.Email</dd>
         <dt>Skills:</dt>
         <dd>
             @if (Model.Skills != null && Model.Skills.Any())

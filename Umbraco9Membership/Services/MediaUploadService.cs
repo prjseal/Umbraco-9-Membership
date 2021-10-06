@@ -38,10 +38,10 @@ namespace Umbraco9Membership.Services
         /// <param name="parentId">The id of the parent media item</param>
         /// <param name="mediaTypeAlias">The media type alias, e.g. Image, File, Folder</param>
         /// <returns>The udi for the new media item</returns>
-        public string CreateMediaItemFromFileUpload(IFormFile file, int parentId, string mediaTypeAlias, int userId = -1)
+        public string CreateMediaItemFromFileUpload(IFormFile file, int parentId, string mediaTypeAlias, int userId = -1, bool returnUdi = true)
         {
             var mediaItem = _mediaService.CreateMedia(file.FileName.ToFriendlyName(), parentId, mediaTypeAlias);
-            return SetMediaItemValueFromFileUpload(file, mediaItem);
+            return SetMediaItemValueFromFileUpload(file, mediaItem, returnUdi);
         }
 
         /// <summary>
@@ -51,10 +51,10 @@ namespace Umbraco9Membership.Services
         /// <param name="parentId">The id of the parent media item to upload it to</param>
         /// <param name="mediaTypeAlias">The media type alias, e.g. Image, File, Folder</param>
         /// <returns>The udi for the new media item</returns>
-        public string CreateMediaItemFromFileUpload(IFormFile file, Guid parentId, string mediaTypeAlias, int userId = -1)
+        public string CreateMediaItemFromFileUpload(IFormFile file, Guid parentId, string mediaTypeAlias, int userId = -1, bool returnUdi = true)
         {
             var mediaItem = _mediaService.CreateMedia(file.FileName.ToFriendlyName(), parentId, mediaTypeAlias);
-            return SetMediaItemValueFromFileUpload(file, mediaItem);
+            return SetMediaItemValueFromFileUpload(file, mediaItem, returnUdi);
         }
 
         /// <summary>
@@ -64,10 +64,10 @@ namespace Umbraco9Membership.Services
         /// <param name="parent">The parent media item</param>
         /// <param name="mediaTypeAlias">The media type alias, e.g. Image, File, Folder</param>
         /// <returns>The udi for the new media item</returns>
-        public string CreateMediaItemFromFileUpload(IFormFile file, IMedia parent, string mediaTypeAlias, int userId = -1)
+        public string CreateMediaItemFromFileUpload(IFormFile file, IMedia parent, string mediaTypeAlias, int userId = -1, bool returnUdi = true)
         {
             var mediaItem = _mediaService.CreateMedia(file.FileName.ToFriendlyName(), parent, Constants.Conventions.MediaTypes.Image);
-            return SetMediaItemValueFromFileUpload(file, mediaItem);
+            return SetMediaItemValueFromFileUpload(file, mediaItem, returnUdi);
         }
 
         /// <summary>
@@ -76,7 +76,7 @@ namespace Umbraco9Membership.Services
         /// <param name="file">The file to upload</param>
         /// <param name="mediaItem">The media item to upload the file to</param>
         /// <returns>The udi for the new media item</returns>
-        public string SetMediaItemValueFromFileUpload(IFormFile file, IMedia mediaItem)
+        public string SetMediaItemValueFromFileUpload(IFormFile file, IMedia mediaItem, bool returnUdi = true)
         {
             mediaItem.SetValue(_mediaFileManager, _mediaUrlGeneratorCollection, _shortStringHelper, _contentTypeBaseServiceProvider, Constants.Conventions.Media.File, file.FileName, file.OpenReadStream());
 
@@ -84,7 +84,15 @@ namespace Umbraco9Membership.Services
 
             var udi = mediaItem.GetUdi();
 
-            return udi.ToString();
+            if(returnUdi)
+            {
+                return udi.ToString();
+            }
+            else
+            {
+                return mediaItem.Key.ToString();
+            }
+
         }
     }
 }

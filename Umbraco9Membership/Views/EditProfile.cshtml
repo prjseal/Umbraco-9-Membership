@@ -1,0 +1,80 @@
+﻿@using Umbraco.Cms.Web.Common.PublishedModels;
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.EditProfile>
+@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
+@using Umbraco.Cms.Core.Security
+
+@inject IMemberManager memberManager
+
+
+@{
+    Layout = "Master.cshtml";
+}
+
+@section Head
+{
+    <style>
+        #sortable {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            width: 450px;
+        }
+
+            #sortable img {
+                margin: 3px 3px 3px 0;
+                padding: 1px;
+                float: left;
+                width: 100px;
+                height: 90px;
+                font-size: 4em;
+                text-align: center;
+            }
+    </style>
+}
+
+
+<main class="page contact-page">
+    <section class="portfolio-block contact">
+        <div class="container">
+            <div class="heading">
+                <h1 class="text-uppercase font-weight-bold">@Model.Name</h1>
+
+                @if (!User.Identity.IsAuthenticated)
+                {
+                    <div class="row">
+                        <div class="col-12 text-center">
+                            <p>You need to be logged in before you can edit your profile. <a href="/login/">Login</a></p>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="row">
+                        <div class="col-6 mx-auto text-left">
+                            @await Component.InvokeAsync("EditProfile", await memberManager.GetCurrentMemberAsync())
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </section>
+</main>
+
+@section ScriptsBottom
+{
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+        $(function () {
+            $("#sortable").sortable();
+            $("#sortable").disableSelection();
+        });
+
+        $("#sortable").on("sortstop", function () {
+            var orderArray = [];
+            $(this).children().each(function (index, element) {
+                orderArray.push($(element).data('sort'));
+            });
+            $("#GallerySortOrder").val(orderArray.join(','));
+        });
+    </script>
+}

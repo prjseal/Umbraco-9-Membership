@@ -18,6 +18,7 @@ using Umbraco.Cms.Infrastructure.Persistence;
 using Umbraco.Cms.Web.Website.Controllers;
 using Umbraco.Extensions;
 using Umbraco9Membership.Models.ViewModels;
+using Umbraco9Membership.Services;
 
 namespace Umbraco9Membership.Controllers.Surface
 {
@@ -28,6 +29,7 @@ namespace Umbraco9Membership.Controllers.Surface
         private readonly ILogger<ProfileSurfaceController> _logger;
         private readonly IEmailSender _emailSender;
         private readonly GlobalSettings _globalSettings;
+        private readonly IAccountService _accountService;
 
         public ProfileSurfaceController(
             //these are required by the base controller
@@ -42,7 +44,8 @@ namespace Umbraco9Membership.Controllers.Surface
             IMemberService memberService,
             ILogger<ProfileSurfaceController> logger,
             IEmailSender emailSender,
-            IOptions<GlobalSettings> globalSettings
+            IOptions<GlobalSettings> globalSettings,
+            IAccountService accountService
             ) : base(umbracoContextAccessor, databaseFactory, services, appCaches, profilingLogger, publishedUrlProvider)
         {
             _memberManager = memberManager ?? throw new ArgumentNullException(nameof(memberManager));
@@ -50,6 +53,7 @@ namespace Umbraco9Membership.Controllers.Surface
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _emailSender = emailSender ?? throw new ArgumentNullException(nameof(emailSender));
             _globalSettings = globalSettings?.Value ?? throw new ArgumentNullException(nameof(globalSettings));
+            _accountService = accountService ?? throw new ArgumentNullException(nameof(accountService));
         }
         
         [HttpPost]
@@ -122,6 +126,29 @@ namespace Umbraco9Membership.Controllers.Surface
                 _logger.LogError(ex, "Error When Trying To Send Already Registered Email");
                 return false;
             }
+        }
+
+        public async Task<IActionResult> EditProfile(EditProfileViewModel model)
+        {
+            if (!ModelState.IsValid) return RedirectToCurrentUmbracoPage();
+
+            var user = await _memberManager.GetCurrentMemberAsync();
+
+            var member = _accountService.GetMemberFromUser(await _memberManager.GetCurrentMemberAsync());
+            
+            if (member == null) return RedirectToCurrentUmbracoPage();
+
+            var memberModel = _accountService.GetMemberModelFromMember(member);
+
+            if (memberModel == null) return RedirectToCurrentUmbracoPage();
+
+            _accountService.UpdateProfile(model, memberModel, member);
+
+            TempData["EditProfileSuccess"] = true;
+
+            var profilePage = CurrentPage.Parent;
+
+            return RedirectToUmbracoPage(profilePage);
         }
     }
 }

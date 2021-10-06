@@ -58,6 +58,14 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		public virtual global::Umbraco.Cms.Core.Models.MediaWithCrops Avatar => this.Value<global::Umbraco.Cms.Core.Models.MediaWithCrops>(_publishedValueFallback, "avatar");
 
 		///<summary>
+		/// Favourite Colour
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "9.0.0+5bfab13dc5a268714aad2426a2b68ab5561a6407")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("favouriteColour")]
+		public virtual string FavouriteColour => this.Value<string>(_publishedValueFallback, "favouriteColour");
+
+		///<summary>
 		/// First Name
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "9.0.0+5bfab13dc5a268714aad2426a2b68ab5561a6407")]
@@ -66,12 +74,36 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		public virtual string FirstName => this.Value<string>(_publishedValueFallback, "firstName");
 
 		///<summary>
+		/// Gallery: Add the photos for the gallery
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "9.0.0+5bfab13dc5a268714aad2426a2b68ab5561a6407")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("gallery")]
+		public virtual global::System.Collections.Generic.IEnumerable<global::Umbraco.Cms.Core.Models.MediaWithCrops> Gallery => this.Value<global::System.Collections.Generic.IEnumerable<global::Umbraco.Cms.Core.Models.MediaWithCrops>>(_publishedValueFallback, "gallery");
+
+		///<summary>
+		/// Job Title: Enter your job title
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "9.0.0+5bfab13dc5a268714aad2426a2b68ab5561a6407")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("jobTitle")]
+		public virtual string JobTitle => this.Value<string>(_publishedValueFallback, "jobTitle");
+
+		///<summary>
 		/// Last Name
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "9.0.0+5bfab13dc5a268714aad2426a2b68ab5561a6407")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("lastName")]
 		public virtual string LastName => this.Value<string>(_publishedValueFallback, "lastName");
+
+		///<summary>
+		/// Skills: Enter your skills
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "9.0.0+5bfab13dc5a268714aad2426a2b68ab5561a6407")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("skills")]
+		public virtual global::System.Collections.Generic.IEnumerable<string> Skills => this.Value<global::System.Collections.Generic.IEnumerable<string>>(_publishedValueFallback, "skills");
 
 		///<summary>
 		/// Is Approved

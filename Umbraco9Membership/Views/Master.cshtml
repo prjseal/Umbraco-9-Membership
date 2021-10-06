@@ -13,17 +13,24 @@
     @await Html.PartialAsync("metaData")
     <link rel="stylesheet preload" as="style" href="@Url.Content("~/portfolio-assets/bootstrap.min.css")">
     <link rel="stylesheet preload" as="style" href="@Url.Content("~/portfolio-assets/ionicons.min.css")">
+
+    @RenderSection("Head", false)
 </head>
 
 <body>
     @await Html.PartialAsync("topNavigation", homePage)
     @RenderBody()
     @await Html.PartialAsync("footer", homePage)
-    <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js"
+    @*<script src="https://code.jquery.com/jquery-3.6.0.slim.min.js"
             integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI="
+            crossorigin="anonymous"></script>*@
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
             crossorigin="anonymous"></script>
     <script src="@Url.Content("/portfolio-assets/bootstrap.min.js")"></script>
     <script src="@Url.Content("~/portfolio-assets/theme.js")"></script>
+
+    @RenderSection("ScriptsBottom", false)
 </body>
 
 </html>

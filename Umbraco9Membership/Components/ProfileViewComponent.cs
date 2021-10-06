@@ -18,7 +18,7 @@ namespace Umbraco9Membership.Components
 
         public IViewComponentResult Invoke(MemberIdentityUser user)
         {
-            var member = _accountService.GetMemberFromUser(user); 
+            var member = _accountService.GetMemberModelFromUser(user); 
 
             var enrichedProfile = _accountService.GetEnrichedProfile(member);
 

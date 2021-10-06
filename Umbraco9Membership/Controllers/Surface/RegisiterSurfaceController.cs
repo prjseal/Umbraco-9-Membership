@@ -73,7 +73,7 @@ namespace Umbraco9Membership.Controllers.Surface
                 if (!ModelState.IsValid) return RedirectToCurrentUmbracoPage();
 
 
-                var fullName = $"{model.FirstName} {model.LastName} {model.Email}";
+                var fullName = $"{model.FirstName} {model.LastName}";
 
                 var memberTypeAlias = CurrentPage.HasValue("memberType")
                     ? CurrentPage.Value<string>("memberType")
